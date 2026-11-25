@@ -1,0 +1,17 @@
+# PostgreSQL untuk development lokal. Jalankan: docker compose up -d
+# Port 5434 supaya tidak bentrok dengan Postgres lain (Yantos-Roastery memakai 5433).
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: checklist
+      POSTGRES_PASSWORD: checklist
+      POSTGRES_DB: checklist_sop
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

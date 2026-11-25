@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Environment Variables (berisi kredensial — jangan di-commit)
+.env
+.env.*
+!.env.example
+
+# Build outputs
+dist/
+build/
+
+# Vercel
+.vercel
+
+# IDE / Editor
+.vscode/
+.idea/
+.claude/settings.local.json
+
+# OS / logs
+.DS_Store
+Thumbs.db
+*.log

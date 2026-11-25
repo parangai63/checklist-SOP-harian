@@ -1,0 +1,53 @@
+// Model data Checklist SOP Harian. Nama model PascalCase, tabel & kolom snake_case.
+// Setup awal: hanya staf + audit log. Model checklist/kasir/raport ditambah per fase (docs/SPESIFIKASI.md).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// Level staf bar (Original: head / senior / junior).
+enum StaffLevel {
+  HEAD
+  SENIOR
+  JUNIOR
+}
+
+model Staff {
+  id        Int        @id @default(autoincrement())
+  name      String
+  level     StaffLevel @default(JUNIOR)
+  isAdmin   Boolean    @default(false) @map("is_admin")
+  /// Hash bcrypt PIN 4–8 angka. PIN unik antar staf aktif (dicek di authService).
+  pinHash   String     @map("pin_hash")
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  deletedAt DateTime?  @map("deleted_at")
+
+  auditLogs AuditLog[]
+
+  @@map("staff")
+}
+
+/// Riwayat perubahan. Tidak pernah diubah atau dihapus.
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  staffId   Int?     @map("staff_id")
+  staff     Staff?   @relation(fields: [staffId], references: [id])
+  action    String
+  entity    String
+  entityId  String?  @map("entity_id")
+  before    Json?
+  after     Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
