@@ -74,3 +74,4 @@ Repo berisi data operasional staf. Buat repository GitHub sebagai **Private**. J
 ## Kerja dengan Claude Code / agen AI
 
 Buka folder ini lalu jalankan `claude`. Konteks proyek ada di `CLAUDE.md`, pedoman detail di `.agents/`.
+"# checklist-SOP-harian" 
